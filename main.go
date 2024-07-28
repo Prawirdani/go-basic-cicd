@@ -15,18 +15,21 @@ func init() {
 	}
 }
 
+func helloHandler(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Hello World!"))
+}
+
+func secretHandler(w http.ResponseWriter, r *http.Request) {
+	m := fmt.Sprintf("The secret is: %s", os.Getenv("SECRET"))
+	w.Write([]byte(m))
+}
+
 func main() {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Hello World!"))
-	})
+	mux.HandleFunc("/", helloHandler)
 
-	mux.HandleFunc("/secrets", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte(
-			fmt.Sprintf("This came from secrets: %s", os.Getenv("SECRET")),
-		))
-	})
+	mux.HandleFunc("/secrets", secretHandler)
 
 	log.Println("Starting server on :8080")
 	http.ListenAndServe(":8080", mux)
