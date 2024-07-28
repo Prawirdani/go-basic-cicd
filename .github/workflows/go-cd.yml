@@ -17,6 +17,5 @@ jobs:
           script: |
             cd ~/apps/go-basic-cicd
             git pull origin master
-            git status
             CGO_ENABLE=0 GOOS=linux go build -a -installsuffix cgo -o main ./main.go
             pm2 restart main
